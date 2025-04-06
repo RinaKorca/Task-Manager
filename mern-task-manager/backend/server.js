@@ -19,13 +19,13 @@ app.use(express.json()); // Parse incoming JSON requests
 // Use the auth routes
 app.use("/api/users", authRoutes); // Register routes under '/api/users'
 
-app.use("/api/tasks", taskRoutes);
+// Use the task routes with protection
+app.use("/api/tasks", protect, taskRoutes);
+
 // Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
-app.use("/api/users", authRoutes);
-app.use("/api/tasks", protect, taskRoutes); // Protected route
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
