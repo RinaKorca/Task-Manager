@@ -5,8 +5,6 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes"); // ✅ Import auth routes
 const taskRoutes = require("./routes/taskRoutes");
 const protect = require("./middleware/authMiddleware");
-const cors = require("cors");
-app.use(cors());
 
 dotenv.config(); // Load .env variables
 
