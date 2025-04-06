@@ -7,6 +7,11 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      // Add description field
+      type: String,
+      required: true, // Make sure description is required, or set to false if optional
+    },
     completed: {
       type: Boolean,
       default: false,

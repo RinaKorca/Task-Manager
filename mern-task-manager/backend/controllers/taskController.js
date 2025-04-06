@@ -18,8 +18,10 @@ const getTasks = async (req, res) => {
 const createTask = async (req, res) => {
   const { title, description } = req.body;
 
-  if (!title) {
-    return res.status(400).json({ message: "Title is required" });
+  if (!title || !description) {
+    return res
+      .status(400)
+      .json({ message: "Title and description are required" });
   }
 
   try {
@@ -27,6 +29,8 @@ const createTask = async (req, res) => {
       user: req.user._id,
       title,
       description,
+      completed: false,
+      user: req.user._id,
     });
 
     res.status(201).json(task);
@@ -39,21 +43,33 @@ const createTask = async (req, res) => {
 // @route   PUT /api/tasks/:id
 // @access  Private
 const updateTask = async (req, res) => {
+  const { id } = req.params; // Get task id from params
+  const { title, description, completed } = req.body; // Get data to update
+
   try {
-    const task = await Task.findOne({ _id: req.params.id, user: req.user._id });
+    // Find the task by id and check if it belongs to the user
+    const task = await Task.findById(id);
 
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    task.title = req.body.title || task.title;
-    task.description = req.body.description || task.description;
-    task.completed = req.body.completed ?? task.completed;
+    if (task.user.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ message: "Not authorized to update this task" });
+    }
 
-    const updatedTask = await task.save();
-    res.json(updatedTask);
+    // Update the task if it belongs to the user
+    task.title = title || task.title;
+    task.description = description || task.description;
+    task.completed = completed !== undefined ? completed : task.completed;
+
+    const updatedTask = await task.save(); // Save the updated task
+
+    res.status(200).json(updatedTask); // Return the updated task
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Error updating task" });
   }
 };
 
