@@ -19,6 +19,7 @@ app.use(express.json()); // Parse incoming JSON requests
 // Use the auth routes
 app.use("/api/users", authRoutes); // Register routes under '/api/users'
 
+app.use("/api/tasks", taskRoutes);
 // Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
