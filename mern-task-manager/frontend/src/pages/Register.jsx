@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/Register.css";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -34,44 +35,46 @@ export default function Register() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="register-container">
       <h2>Register</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
+      {error && <p className="error">{error}</p>}
+      <form onSubmit={handleSubmit} className="register-form">
+        <div className="input-group">
           <label>Name:</label>
-          <br />
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
+            className="input-field"
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Email:</label>
-          <br />
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            className="input-field"
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Password:</label>
-          <br />
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
+            className="input-field"
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="submit-btn">
+          Register
+        </button>
       </form>
     </div>
   );
