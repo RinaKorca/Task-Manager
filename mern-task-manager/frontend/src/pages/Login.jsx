@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -35,33 +36,39 @@ export default function Login() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <br />
+    <div className="login-container">
+      <h2 className="login-heading">Login</h2>
+      {error && <p className="login-error">{error}</p>}
+      <form onSubmit={handleSubmit} className="login-form">
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">
+            Email:
+          </label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <label>Password:</label>
-          <br />
+        <div className="form-group">
+          <label htmlFor="password" className="form-label">
+            Password:
+          </label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="submit-button">
+          Login
+        </button>
       </form>
     </div>
   );

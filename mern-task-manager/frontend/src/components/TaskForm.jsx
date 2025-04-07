@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import API from "../utils/api";
+import "./TaskForm.css"; // ✅ Import the new CSS file
 
 const TaskForm = ({ onTaskAdded, task, onTaskUpdated }) => {
   const [title, setTitle] = useState("");
@@ -10,7 +11,7 @@ const TaskForm = ({ onTaskAdded, task, onTaskUpdated }) => {
       setTitle(task.title);
       setDescription(task.description);
     }
-  }, [task]); // When task changes, populate the form with the existing task details
+  }, [task]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,15 +19,13 @@ const TaskForm = ({ onTaskAdded, task, onTaskUpdated }) => {
 
     try {
       if (task) {
-        // If there's a task being edited, update it
         onTaskUpdated({ title, description });
       } else {
-        // Otherwise, create a new task
         await API.post("/tasks", { title, description });
-        onTaskAdded(); // callback to refresh tasks
+        onTaskAdded();
       }
 
-      setTitle(""); // Reset the form
+      setTitle("");
       setDescription("");
     } catch (error) {
       console.error(error.response?.data?.message || "Error creating task");
@@ -34,18 +33,22 @@ const TaskForm = ({ onTaskAdded, task, onTaskUpdated }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="task-form" onSubmit={handleSubmit}>
       <input
+        className="task-input"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <input
+        className="task-input"
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <button type="submit">{task ? "Update Task" : "Add Task"}</button>
+      <button className="task-button" type="submit">
+        {task ? "Update Task" : "Add Task"}
+      </button>
     </form>
   );
 };

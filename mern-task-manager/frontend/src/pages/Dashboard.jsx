@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import TaskForm from "../components/TaskForm.jsx";
 import API from "../utils/api";
+import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -63,34 +64,49 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
+    <div className="dashboard-container">
       <h2>Dashboard</h2>
       {/* If we are editing a task, show the form for updating it */}
       {editingTask ? (
-        <TaskForm
-          task={editingTask} // Pass the task being edited to the form
-          onTaskUpdated={(updatedTaskData) =>
-            updateTask(editingTask._id, updatedTaskData)
-          } // Call updateTask function when submitting the updated task
-        />
+        <div className="task-form-container">
+          <TaskForm
+            task={editingTask} // Pass the task being edited to the form
+            onTaskUpdated={(updatedTaskData) =>
+              updateTask(editingTask._id, updatedTaskData)
+            } // Call updateTask function when submitting the updated task
+          />
+        </div>
       ) : (
-        <TaskForm onTaskAdded={fetchTasks} />
+        <div className="task-form-container">
+          <TaskForm onTaskAdded={fetchTasks} />
+        </div>
       )}
-      <ul>
+      <div className="task-list">
         {tasks.map((task) => (
-          <li key={task._id}>
-            <strong>{task.title}</strong> - {task.description}
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => toggleCompleted(task._id, task.completed)}
-            />
-            <button onClick={() => deleteTask(task._id)}>Delete</button>
-            <button onClick={() => setEditingTask(task)}>Edit</button>{" "}
-            {/* Edit button */}
-          </li>
+          <div key={task._id} className="task-item">
+            <div className="task-info">
+              <strong>{task.title}</strong> {/* Title */}
+              <span>{task.description}</span> {/* Description */}
+            </div>
+            <div className="task-actions">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleCompleted(task._id, task.completed)}
+              />
+              <button className="edit-btn" onClick={() => setEditingTask(task)}>
+                Edit
+              </button>
+              <button
+                className="delete-btn"
+                onClick={() => deleteTask(task._id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
